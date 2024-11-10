@@ -31,6 +31,15 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/chatList') }}">Pokalbių sąrašas</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/reviews') }}">Atsiliepimai</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/user_reviews') }}">Jūsų atsiliepimai</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/contact') }}">Susisiekite su mumis</a>
+                    </li>
                     @auth
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>

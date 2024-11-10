@@ -29,7 +29,15 @@ Route::get('/chat', function () {
 Route::get('/chatList', function () {
     return view('chatList');  // Return the contact view
 });
-
+Route::get('/reviews', function () {
+    return view('reviews');
+})->name('reviews');
+Route::get('/user_reviews', function () {
+    return view('user_reviews');
+})->name('user_reviews');
+Route::get('/edit_review/{id}', function ($id) {
+    return view('edit_review', ['reviewId' => $id]);
+})->name('edit_review');
 
 
 require __DIR__.'/auth.php';
