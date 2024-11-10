@@ -20,5 +20,16 @@ Route::middleware('auth')->group(function () {
 Route::get('/contact', function () {
     return view('contact');  // Return the contact view
 });
+Route::get('/email', function () {
+    return view('email');  // Return the contact view
+});
+Route::get('/chat', function () {
+    return view('chat');  // Return the contact view
+});
+Route::get('/chatList', function () {
+    return view('chatList');  // Return the contact view
+});
+
+
 
 require __DIR__.'/auth.php';
