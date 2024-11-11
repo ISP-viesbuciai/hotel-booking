@@ -38,7 +38,7 @@
                         <a class="nav-link" href="{{ url('/user_reviews') }}">Jūsų atsiliepimai</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/contact') }}">Susisiekite su mumis</a>
+                        <a class="nav-link" href="{{ url('/rooms') }}">Kambariai</a>
                     </li>
                     @auth
                         <li class="nav-item">
