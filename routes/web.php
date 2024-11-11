@@ -29,7 +29,15 @@ Route::get('/chat', function () {
 Route::get('/chatList', function () {
     return view('chatList');  // Return the contact view
 });
+Route::get('/profile', function () {
+    return view('profile');  // Return the contact view
+});
+Route::get('/rezervations', function () {
+    return view('rezervations');  // Return the contact view
+});
 
-
+Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
 require __DIR__.'/auth.php';

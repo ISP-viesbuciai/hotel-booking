@@ -57,4 +57,10 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+    public function show()
+    {
+        // For now, we are returning a dummy profile
+        return view('profile');
+    }
+
 }

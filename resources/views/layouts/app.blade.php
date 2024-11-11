@@ -31,6 +31,12 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/chatList') }}">Pokalbių sąrašas</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/profile') }}">Naudotojo profilis</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/rezervations') }}">Admin: Rezervacijos</a>
+                    </li>
                     @auth
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
