@@ -39,5 +39,9 @@ Route::get('/edit_review/{id}', function ($id) {
     return view('edit_review', ['reviewId' => $id]);
 })->name('edit_review');
 
+Route::get('/rooms', function () {
+    return view('rooms.room');  // Loads the room management page
+})->name('rooms');
+
 
 require __DIR__.'/auth.php';
