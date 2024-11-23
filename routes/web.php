@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -16,6 +18,17 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])
+    ->name('login')
+    ->middleware('guest');
+
+Route::get('/register', [RegisteredUserController::class, 'create'])
+    ->name('register')
+    ->middleware('guest');
+
+Route::post('/register', [RegisteredUserController::class, 'store'])
+    ->middleware('guest');
 
 Route::get('/contact', function () {
     return view('contact');  // Return the contact view
