@@ -13,7 +13,7 @@ return new class extends Migration
             $table->integer('ivertinimas')->nullable();
             $table->date('data')->nullable();
             $table->unsignedInteger('fk_Naudotojas');
-            $table->foreign('fk_Naudotojas')->references('kliento_id')->on('naudotojas');
+            $table->foreign('fk_Naudotojas')->references('id')->on('users');
         });
     }
 

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->unsignedInteger('fk_Rezervacija');
             $table->unsignedInteger('fk_Naudotojas');
             $table->foreign('fk_Rezervacija')->references('rezervacijos_id')->on('rezervacija');
-            $table->foreign('fk_Naudotojas')->references('kliento_id')->on('naudotojas');
+            $table->foreign('fk_Naudotojas')->references('id')->on('users');
         });
     }
 
