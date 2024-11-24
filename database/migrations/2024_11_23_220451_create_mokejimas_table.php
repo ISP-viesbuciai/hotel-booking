@@ -1,25 +1,24 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('mokejimas', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->increments('mokejimo_id')->primary();
+            $table->date('data')->nullable();
+            $table->string('apmokejimo_budas')->nullable();
+            $table->double('suma')->nullable();
+            $table->unsignedInteger('fk_Rezervacija');
+            $table->unsignedInteger('fk_Naudotojas');
+            $table->foreign('fk_Rezervacija')->references('rezervacijos_id')->on('rezervacija');
+            $table->foreign('fk_Naudotojas')->references('kliento_id')->on('naudotojas');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('mokejimas');
