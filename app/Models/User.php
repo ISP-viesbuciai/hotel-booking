@@ -19,6 +19,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_admin',
     ];
 
     /**
@@ -37,5 +38,15 @@ class User extends Authenticatable
      */
     protected $casts = [
         'password' => 'hashed',
+        'is_admin' => 'boolean',
     ];
+    public function rezervacijos()
+    {
+        return $this->hasMany(Rezervacija::class, 'fk_Naudotojas');
+    }
+
+    public function mokejimai()
+    {
+        return $this->hasMany(Mokejimas::class, 'fk_Naudotojas');
+    }
 }

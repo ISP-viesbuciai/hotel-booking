@@ -44,6 +44,11 @@
                         <a class="nav-link" href="{{ url('/rooms') }}">Kambariai</a>
                     </li>
                     @auth
+                        @if (Auth::user()->is_admin)
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('admin.reservations.index') }}">Rezervacijos</a>
+                            </li>
+                        @endif
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/profile/edit') }}">Profilio redagavimas</a>
                         </li>

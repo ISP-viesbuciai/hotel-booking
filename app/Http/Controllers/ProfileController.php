@@ -65,4 +65,27 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    public function addCard(Request $request)
+    {
+        $request->validate([
+            'Korteles_nr' => ['required', 'string', 'max:255'],
+            'Korteles_savininkas' => ['required', 'string', 'max:255'],
+            'Galiojimo_data' => ['required', 'date'],
+            'CVV' => ['required', 'string', 'max:4'],
+            'Atsiskaitymo_adresas' => ['required', 'string', 'max:255'],
+        ]);
+
+        $user = Auth::user();
+        $user->paymentInformation()->create([
+            'Korteles_nr' => $request->Korteles_nr,
+            'Korteles_savininkas' => $request->Korteles_savininkas,
+            'Galiojimo_data' => $request->Galiojimo_data,
+            'CVV' => $request->CVV,
+            'Atsiskaitymo_adresas' => $request->Atsiskaitymo_adresas,
+            'fk_Mokejimas' => 1, // Example value, adjust as needed
+        ]);
+
+        return redirect()->route('profile.edit')->with('status', 'Card added successfully.');
+    }
 }

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('telefono_nr')->nullable();
             $table->string('adresas')->nullable();
             $table->date('registracijos_data')->nullable();
-            $table->boolean('ar_administratorius')->nullable();
+            $table->boolean('is_admin')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

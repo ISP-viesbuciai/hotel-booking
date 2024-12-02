@@ -7,7 +7,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('mokejimo_informacija', function (Blueprint $table) {
+        Schema::create('payment_information', function (Blueprint $table) {
             $table->increments('MokejimoInformacijos_id')->primary();
             $table->string('Korteles_nr')->nullable();
             $table->string('Korteles_savininkas')->nullable();
