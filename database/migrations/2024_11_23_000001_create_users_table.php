@@ -11,7 +11,7 @@ return new class extends Migration
             $table->increments('id');
             $table->string('name')->nullable();
             $table->string('password');
-            $table->string('el_pastas')->nullable();
+            $table->string('email')->nullable();
             $table->string('telefono_nr')->nullable();
             $table->string('adresas')->nullable();
             $table->date('registracijos_data')->nullable();

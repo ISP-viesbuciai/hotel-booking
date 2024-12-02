@@ -28,13 +28,13 @@ class ProfileController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            //'email' => ['required', 'string', 'email', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['nullable', 'confirmed', 'min:8'],
         ]);
 
         $user = Auth::user();
         $user->name = $request->name;
-       // $user->email = $request->email;
+        $user->email = $request->email;
 
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);

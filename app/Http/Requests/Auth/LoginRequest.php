@@ -27,7 +27,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string'],
+            'email' => ['required', 'string'],
             'password' => ['required', 'string'],
         ];
     }
@@ -40,9 +40,9 @@ class LoginRequest extends FormRequest
     public function authenticate(): void
     {
 
-        if (! Auth::attempt($this->only('name', 'password'))) {
+        if (! Auth::attempt($this->only('email', 'password'))) {
             throw ValidationException::withMessages([
-                'name' => trans('auth.failed'),
+                'email' => trans('auth.failed'),
             ]);
         }
 
