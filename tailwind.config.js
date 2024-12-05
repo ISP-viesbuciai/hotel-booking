@@ -9,6 +9,12 @@ export default {
         './resources/views/**/*.blade.php',
     ],
 
+    prefix: 'tw-',
+
+    corePlugins: {
+        preflight: false, // Disable Tailwind's base reset
+    },
+
     theme: {
         extend: {
             fontFamily: {

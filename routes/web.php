@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RoomsController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -41,9 +42,19 @@ Route::get('/edit_review/{id}', function ($id) {
     return view('edit_review', ['reviewId' => $id]);
 })->name('edit_review');
 
-Route::get('/rooms', function () {
-    return view('rooms.room');  // Loads the room management page
-})->name('rooms');
+// ROOMS ROUTES START
+Route::get('/rooms', [RoomsController::class, 'index'])->name('rooms.index');
+Route::post('/rooms', [RoomsController::class, 'store'])->name('rooms.store');
+Route::put('/rooms/{id}', [RoomsController::class, 'update'])->name('rooms.update');
+Route::delete('/rooms/{id}', [RoomsController::class, 'destroy'])->name('rooms.destroy');
+
+// Route to view free rooms by date or period
+Route::get('/rooms/free', [RoomsController::class, 'showFreeRooms'])->name('rooms.free');
+
+// Route for automatic group allocation
+Route::post('/rooms/allocate-group', [RoomsController::class, 'autoAllocateForGroup'])->name('rooms.allocate-group');
+
+// ROOMS ROUTES END
 
 
 require __DIR__.'/auth.php';
