@@ -124,9 +124,9 @@
                     <tr class="tw-bg-gray-50">
                         <th class="tw-py-1 tw-px-2 tw-border tw-border-gray-300 tw-text-gray-600 tw-text-sm">Kambario Numeris</th>
                         <th class="tw-py-1 tw-px-2 tw-border tw-border-gray-300 tw-text-gray-600 tw-text-sm">Tipas</th>
-                        <th class="tw-py-1 tw-px-2 tw-border tw-border-gray-300 tw-text-gray-600 tw-text-sm">Kapacitetas</th>
+                        <th class="tw-py-1 tw-px-2 tw-border tw-border-gray-300 tw-text-gray-600 tw-text-sm">Talpa</th>
                         <th class="tw-py-1 tw-px-2 tw-border tw-border-gray-300 tw-text-gray-600 tw-text-sm">Kaina už Nakvynę</th>
-                        <th class="tw-py-1 tw-px-2 tw-border tw-border-gray-300 tw-text-gray-600 tw-text-sm">Pasiekiamumas</th>
+                        <th class="tw-py-1 tw-px-2 tw-border tw-border-gray-300 tw-text-gray-600 tw-text-sm">Laisvas</th>
                         <th class="tw-py-1 tw-px-2 tw-border tw-border-gray-300 tw-text-gray-600 tw-text-sm">Aukštas</th>
                         <th class="tw-py-1 tw-px-2 tw-border tw-border-gray-300 tw-text-gray-600 tw-text-sm">Vaizdas į Jūrą</th>
                         <th class="tw-py-1 tw-px-2 tw-border tw-border-gray-300 tw-text-gray-600 tw-text-sm">Veiksmai</th>
