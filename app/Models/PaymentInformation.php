@@ -6,8 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class PaymentInformation extends Model
 {
-    use HasFactory;
-
     protected $table = 'payment_information'; // Ensure this matches your table name
 
     protected $fillable = [
@@ -18,7 +16,7 @@ class PaymentInformation extends Model
         'Atsiskaitymo_adresas',
         'fk_Mokejimas',
     ];
-
+    public $timestamps = false; // Disable automatic timestamps
     public function mokejimas()
     {
         return $this->belongsTo(Mokejimas::class, 'fk_Mokejimas');

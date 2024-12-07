@@ -68,24 +68,34 @@ class ProfileController extends Controller
 
     public function addCard(Request $request)
     {
-        $request->validate([
-            'Korteles_nr' => ['required', 'string', 'max:255'],
-            'Korteles_savininkas' => ['required', 'string', 'max:255'],
-            'Galiojimo_data' => ['required', 'date'],
-            'CVV' => ['required', 'string', 'max:4'],
-            'Atsiskaitymo_adresas' => ['required', 'string', 'max:255'],
-        ]);
+    $request->validate([
+        'Korteles_nr' => ['required', 'string', 'max:16'],
+        'Korteles_savininkas' => ['required', 'string', 'max:255'],
+        'Galiojimo_data' => ['required', 'date'],
+        'CVV' => ['required', 'string', 'max:4'],
+        'Atsiskaitymo_adresas' => ['required', 'string', 'max:255'],
+    ]);
 
-        $user = Auth::user();
-        $user->paymentInformation()->create([
-            'Korteles_nr' => $request->Korteles_nr,
-            'Korteles_savininkas' => $request->Korteles_savininkas,
-            'Galiojimo_data' => $request->Galiojimo_data,
-            'CVV' => $request->CVV,
-            'Atsiskaitymo_adresas' => $request->Atsiskaitymo_adresas,
-            'fk_Mokejimas' => 1, // Example value, adjust as needed
-        ]);
+    // Hash the card number using the custom SHA-256 function
+    $hashedCardNumber = sha256_from_scratch($request->Korteles_nr);
 
-        return redirect()->route('profile.edit')->with('status', 'Card added successfully.');
+    // Save the payment information in the database
+    $user = Auth::user();
+    $rezervacija = $user->rezervacijos()->first(); // Assuming you want to associate with the first reservation
+    if ($rezervacija) {
+        $mokejimas = $rezervacija->mokejimas;
+        if ($mokejimas) {
+            $mokejimas->paymentInformation()->create([
+                'Korteles_nr' => $hashedCardNumber, // Store the hashed card number
+                'Korteles_savininkas' => $request->Korteles_savininkas,
+                'Galiojimo_data' => $request->Galiojimo_data,
+                'CVV' => $request->CVV,
+                'Atsiskaitymo_adresas' => $request->Atsiskaitymo_adresas,
+                'fk_Mokejimas' => $mokejimas->mokejimo_id,
+            ]);
+        }
     }
+
+    return redirect()->route('profile.edit')->with('status', 'Card added successfully.');
+}
 }

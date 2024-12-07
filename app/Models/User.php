@@ -44,9 +44,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(Rezervacija::class, 'fk_Naudotojas');
     }
-
-    public function mokejimai()
-    {
-        return $this->hasMany(Mokejimas::class, 'fk_Naudotojas');
-    }
 }
