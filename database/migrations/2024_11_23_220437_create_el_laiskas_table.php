@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('tekstas')->nullable();
             $table->time('laikas')->nullable();
             $table->unsignedInteger('fk_Naudotojas');
-            $table->foreign('fk_Naudotojas')->references('kliento_id')->on('naudotojas');
+            $table->foreign('fk_Naudotojas')->references('id')->on('users');
         });
     }
 

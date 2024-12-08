@@ -11,7 +11,7 @@ return new class extends Migration
             $table->unsignedInteger('fk_Naudotojas');
             $table->unsignedInteger('fk_Zinute');
             $table->primary(['fk_Naudotojas', 'fk_Zinute']);
-            $table->foreign('fk_Naudotojas')->references('kliento_id')->on('naudotojas');
+            $table->foreign('fk_Naudotojas')->references('id')->on('users');
             $table->foreign('fk_Zinute')->references('zinutes_id')->on('zinute');
         });
     }

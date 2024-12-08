@@ -7,21 +7,22 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('naudotojas', function (Blueprint $table) {
-            $table->increments('kliento_id')->primary();
+        Schema::create('users', function (Blueprint $table) {
+            $table->increments('id');
             $table->string('name')->nullable();
-            $table->string('password')->nullable();
-            $table->string('el_pastas')->nullable();
+            $table->string('password');
+            $table->string('email')->nullable();
             $table->string('telefono_nr')->nullable();
             $table->string('adresas')->nullable();
             $table->date('registracijos_data')->nullable();
-            $table->boolean('ar_administratorius')->nullable();
-            $table->string('prisijungimo_slaptazodis')->nullable();
+            $table->boolean('is_admin')->default(false);
+            $table->rememberToken();
+            $table->timestamps();
         });
     }
 
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('naudotojas');
+        Schema::dropIfExists('users');
     }
 };

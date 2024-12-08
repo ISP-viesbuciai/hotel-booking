@@ -9,7 +9,7 @@ return new class extends Migration
     {
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->bigInteger('user_id')->unsigned()->nullable();
+            $table->integer('user_id')->unsigned()->nullable();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');
@@ -18,7 +18,7 @@ return new class extends Migration
         });
     }
 
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('sessions');
     }
