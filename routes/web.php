@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomsController;
+use App\Http\Controllers\EmailController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -61,6 +62,9 @@ Route::get('/rooms/free', [RoomsController::class, 'showFreeRooms'])->name('room
 Route::post('/rooms/allocate-group', [RoomsController::class, 'autoAllocateForGroup'])->name('rooms.allocate-group');
 
 // ROOMS ROUTES END
+
+// email route
+Route::post('/send-email', [EmailController::class, 'store'])->name('send-email');
 
 
 require __DIR__.'/auth.php';
