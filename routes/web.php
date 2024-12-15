@@ -5,7 +5,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RoomsController;
+use App\Http\Controllers\RoomsController; // Ensure this is correctly referenced
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ConversationController;
@@ -16,7 +16,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(middleware: ['auth'])->name('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -30,16 +30,16 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 Route::get('/contact', function () {
-    return view('contact');  // Return the contact view
+    return view('contact');
 });
 Route::get('/email', function () {
-    return view('email');  // Return the contact view
+    return view('email');
 });
 Route::get('/chat', function () {
-    return view('chat');  // Return the contact view
+    return view('chat');
 });
 Route::get('/chatList', function () {
-    return view('chatList');  // Return the contact view
+    return view('chatList');
 });
 Route::get('/reviews', function () {
     return view('reviews');
@@ -52,16 +52,16 @@ Route::get('/edit_review/{id}', function ($id) {
 })->name('edit_review');
 
 // ROOMS ROUTES START
-Route::get('/rooms', [RoomsController::class, 'index'])->name('rooms.index');
-Route::post('/rooms', [RoomsController::class, 'store'])->name('rooms.store');
-Route::put('/rooms/{id}', [RoomsController::class, 'update'])->name('rooms.update');
-Route::delete('/rooms/{id}', [RoomsController::class, 'destroy'])->name('rooms.destroy');
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/rooms', [\App\Http\Controllers\RoomsController::class, 'index'])->name('rooms.index');
+    Route::post('/rooms', [\App\Http\Controllers\RoomsController::class, 'store'])->name('rooms.store');
+    Route::put('/rooms/{id}', [\App\Http\Controllers\RoomsController::class, 'update'])->name('rooms.update');
+    Route::delete('/rooms/{id}', [\App\Http\Controllers\RoomsController::class, 'destroy'])->name('rooms.destroy');
 
-// Route to view free rooms by date or period
-Route::get('/rooms/free', [RoomsController::class, 'showFreeRooms'])->name('rooms.free');
-
-// Route for automatic group allocation
-Route::post('/rooms/allocate-group', [RoomsController::class, 'autoAllocateForGroup'])->name('rooms.allocate-group');
+    Route::get('/rooms/free', [\App\Http\Controllers\RoomsController::class, 'showFreeRooms'])->name('rooms.free');
+    Route::post('/rooms/propose-allocate-group', [\App\Http\Controllers\RoomsController::class, 'proposeAllocateForGroup'])->name('rooms.propose-allocate-group');
+    Route::post('/rooms/confirm-allocate-group', [\App\Http\Controllers\RoomsController::class, 'confirmAllocateForGroup'])->name('rooms.confirm-allocate-group');
+});
 
 // ROOMS ROUTES END
 

@@ -11,77 +11,76 @@
 </head>
 
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{{ url('/') }}">Viešbučių rezervacija</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{{ url('/') }}">Viešbučių rezervacija</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/') }}">Pagrindinis</a>
-                    </li>
-                    <!-- <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/about') }}">About</a>
-                    </li> -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/contact') }}">Susisiekite su mumis</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/email') }}">Parašykite laišką</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/chatList') }}">Pokalbių sąrašas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/reviews') }}">Atsiliepimai</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/user_reviews') }}">Jūsų atsiliepimai</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/rooms') }}">Kambariai</a>
-                    </li>
-                    @auth
-                        @if (Auth::user()->is_admin)
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('admin.reservations.index') }}">Rezervacijos</a>
-                            </li>
-                        @endif
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/') }}">Pagrindinis</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/contact') }}">Susisiekite su mumis</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/email') }}">Parašykite laišką</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/chatList') }}">Pokalbių sąrašas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/reviews') }}">Atsiliepimai</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/user_reviews') }}">Jūsų atsiliepimai</a>
+                </li>
+
+                @auth
+                    @if (Auth::user()->is_admin)
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/profile/edit') }}">Profilio redagavimas</a>
+                            <a class="nav-link" href="{{ route('admin.reservations.index') }}">Rezervacijos</a>
                         </li>
+
                         <li class="nav-item">
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
-                            <a class="nav-link" href="{{ route('logout') }}"
-                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                Logout
-                            </a>
+                            <a class="nav-link" href="{{ url('/rooms') }}">Kambariai</a>
                         </li>
-                    @else
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">Prisijungti</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}">Registruotis</a>
-                        </li>
-                    @endauth
-                </ul>
-            </div>
+                    @endif
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/profile/edit') }}">Profilio redagavimas</a>
+                    </li>
+                    <li class="nav-item">
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                        <a class="nav-link" href="{{ route('logout') }}"
+                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            Atsijungti
+                        </a>
+                    </li>
+                @else
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('login') }}">Prisijungti</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('register') }}">Registruotis</a>
+                    </li>
+                @endauth
+            </ul>
         </div>
-    </nav>
-
-    <!-- Main content -->
-    <div class="container mt-4">
-        @yield('content')
     </div>
+</nav>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Main content -->
+<div class="container mt-4">
+    @yield('content')
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
