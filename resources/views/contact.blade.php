@@ -2,62 +2,164 @@
 
 @section('content')
     <div class="container">
-        <h1>Dažniausiai Užduodami Klausimai (D.U.K.)</h1>
-        
-        <div class="faq-item">
-            <h3>1. Kaip atlikti viešbučio rezervaciją?</h3>
-            <p>Norėdami atlikti viešbučio rezervaciją, pasirinkite norimą datą, kambario tipą ir užpildykite rezervacijos formą mūsų svetainėje.</p>
+        <div id="faq-chat" class="chat-container">
+            <div class="chat-header">
+                <h2>Dažniausiai Užduodami Klausimai (Spauskite ant klausimo) </h2>
+            </div>
+
+            <!-- Admin's FAQ messages -->
+            <div class="chat-window">
+                @foreach($faqs as $index => $faq)
+                    <div class="message support" data-question="{{ $faq->question }}" data-answer="{{ $faq->answer }}">
+                        <div class="message-bubble">
+                            <strong>{{ $index + 1 }}. {{ $faq->question }}</strong>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
         </div>
 
-        <div class="faq-item">
-            <h3>2. Ar galiu pakeisti savo rezervaciją po patvirtinimo?</h3>
-            <p>Taip, jūs galite pakeisti savo rezervaciją iki 24 valandų prieš atvykimą. Jei reikia keisti datą ar kambario tipą, susisiekite su mūsų klientų aptarnavimo komanda.</p>
-        </div>
-
-        <div class="faq-item">
-            <h3>3. Ar reikia sumokėti už visą rezervaciją iš anksto?</h3>
-            <p>Dažniausiai už rezervaciją reikia sumokėti tik atvykimo metu. Tačiau kai kuriems pasiūlymams gali reikėti sumokėti iš anksto, priklausomai nuo viešbučio politikos.</p>
-        </div>
-
-        <div class="faq-item">
-            <h3>4. Ar galiu atšaukti savo rezervaciją?</h3>
-            <p>Taip, jūs galite atšaukti savo rezervaciją nemokamai iki 48 valandų prieš atvykimą. Po šio laikotarpio gali būti taikomas mažas atšaukimo mokestis.</p>
-        </div>
-
-        <div class="faq-item">
-            <h3>5. Ar viešbutyje leidžiama laikyti augintinius?</h3>
-            <p>Augintiniai yra leidžiami tik kai kuriuose kambariuose, todėl rekomenduojame iš anksto susisiekti su viešbučiu ir patikrinti augintinių politiką.</p>
-        </div>
-
-        <div class="faq-item">
-            <h3>6. Ar galiu pasirinkti konkretaus kambario numerį?</h3>
-            <p>Deja, kambario numerio pasirinkti negalima, tačiau mes garantuojame, kad gausite kambario tipą, kurį užsisakėte.</p>
-        </div>
-
-        <div class="faq-item">
-            <h3>7. Ką daryti, jei nesu patenkintas savo kambariu?</h3>
-            <p>Jei nesate patenkintas savo kambariu, prašome nedelsiant informuoti mūsų priimamąjį, ir mes stengsimės rasti tinkamą sprendimą arba pasiūlyti kitą kambarį.</p>
-        </div>
-
-        <div class="faq-item">
-            <h3>8. Ar galiu pakeisti svečių skaičių po rezervacijos?</h3>
-            <p>Taip, jei reikia pakeisti svečių skaičių, susisiekite su mūsų komanda kuo greičiau, kad galėtume atnaujinti jūsų užsakymą.</p>
-        </div>
-
-        <div class="faq-item">
-            <h3>9. Ar yra nemokamas parkingas viešbutyje?</h3>
-            <p>Kai kuriuose mūsų viešbučiuose yra nemokamas parkingas, tačiau kai kuriose vietose gali būti taikomas papildomas mokestis. Rekomenduojame pasitikrinti pagal vietą.</p>
-        </div>
-
-        <div class="faq-item">
-            <h3>10. Ar viešbutyje yra vaikams pritaikytų paslaugų?</h3>
-            <p>Taip, mes siūlome vaikams pritaikytas paslaugas, tokius kaip žaidimų kambariai, vaikų lovelės ir specialūs meniu.</p>
-        </div>
-
-        <!-- Message and Button for the next page -->
         <div class="faq-message mt-5">
-            <h3>Neradote atsakymo į norimą klausimą? susisiekite su darbuotoju.</h3>
+            <h3>Neradote atsakymo į norimą klausimą? Susisiekite su darbuotoju.</h3>
             <a href="{{ url('/chat') }}" class="btn btn-primary mt-2">Pradėti pokalbį su darbuotoju</a>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const faqItems = document.querySelectorAll('.message.support');
+
+            faqItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const question = item.dataset.question;
+                    const answer = item.dataset.answer;
+
+                    // Add to chat window
+                    const chatWindow = document.querySelector('.chat-window');
+
+                    // User question
+                    const userMessage = document.createElement('div');
+                    userMessage.classList.add('message', 'support');
+                    userMessage.innerHTML = `<div class="message-bubble">${question}</div>`;
+                    chatWindow.appendChild(userMessage);
+
+                    // Admin response
+                    const adminMessage = document.createElement('div');
+                    adminMessage.classList.add('message', 'client');
+                    adminMessage.innerHTML = `<div class="message-bubble">${answer}</div>`;
+                    chatWindow.appendChild(adminMessage);
+
+                    chatWindow.scrollTop = chatWindow.scrollHeight;
+
+                    // Save to the database
+                    fetch('{{ route('faq.chat') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        },
+                        body: JSON.stringify({ question, answer }),
+                    }).then(response => {
+                        if (!response.ok) {
+                            console.error('Failed to save chat messages.');
+                        }
+                    }).catch(error => {
+                        console.error('Error:', error);
+                    });
+                });
+            });
+        });
+    </script>
+@endsection
+
+@section('styles')
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .chat-container {
+            width: 80%;
+            max-width: 800px;
+            margin: 50px auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .chat-header {
+            background-color: #007BFF;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .chat-header h2 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .chat-window {
+            padding: 20px;
+            max-height: 500px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+        }
+
+        .message {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .message.support {
+            justify-content: flex-start;
+        }
+
+        .message.client {
+            justify-content: flex-end;
+        }
+
+        .message .message-bubble {
+            max-width: 60%;
+            padding: 10px;
+            border-radius: 15px;
+            font-size: 14px;
+        }
+
+        .message.support .message-bubble {
+            background-color: #e1f5fe;
+            color: #007BFF;
+        }
+
+        .message.client .message-bubble {
+            background-color: #dcedc8;
+            color: #388e3c;
+        }
+
+        .faq-message {
+            text-align: center;
+        }
+
+        .faq-message h3 {
+            margin-top: 30px;
+        }
+
+        .btn-primary {
+            background-color: #007BFF;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 25px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
 @endsection

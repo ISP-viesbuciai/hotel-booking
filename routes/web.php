@@ -6,6 +6,9 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomsController; // Ensure this is correctly referenced
+use App\Http\Controllers\EmailController;
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\ConversationController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -61,5 +64,23 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 // ROOMS ROUTES END
+
+// email route
+Route::post('/send-email', [EmailController::class, 'store'])->name('send-email');
+
+Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+Route::get('/chat/start', [ChatController::class, 'startConversation'])->name('chat.start');
+Route::post('/chat/message', [ChatController::class, 'sendMessage'])->name('chat.message');
+
+// Route to show all conversations
+Route::get('/chatList', [ConversationController::class, 'showAllConversations'])->name('all.pokalbiai');
+
+// Route to join a conversation
+Route::get('/pokalbis/{id}/join', [ConversationController::class, 'joinConversation'])->name('join.pokalbis');
+Route::get('/chat/join/{id}', [ConversationController::class, 'joinConversation'])->name('join.pokalbis');
+Route::post('/chat/message', [ConversationController::class, 'sendMessage'])->name('chat.message');
+
+Route::get('/contact', [ChatController::class, 'faq'])->name('contact');
+Route::post('/faq/chat', [ChatController::class, 'saveFaqToChat'])->name('faq.chat');
 
 require __DIR__.'/auth.php';
