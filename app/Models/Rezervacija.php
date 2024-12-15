@@ -33,7 +33,7 @@ class Rezervacija extends Model
     }
     public function room()
     {
-        return $this->belongsTo(Room::class, 'fk_Kambarys');
+        return $this->belongsTo(Kambarys::class, 'fk_Kambarys');
     }
 
     public function status()

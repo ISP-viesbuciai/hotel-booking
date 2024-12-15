@@ -5,7 +5,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RoomsController;
+use App\Http\Controllers\RoomsController; // Keep this as is
 
 Route::get('/', function () {
     return view('welcome');
@@ -13,7 +13,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(middleware: ['auth'])->name('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -27,16 +27,16 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 Route::get('/contact', function () {
-    return view('contact');  // Return the contact view
+    return view('contact');
 });
 Route::get('/email', function () {
-    return view('email');  // Return the contact view
+    return view('email');
 });
 Route::get('/chat', function () {
-    return view('chat');  // Return the contact view
+    return view('chat');
 });
 Route::get('/chatList', function () {
-    return view('chatList');  // Return the contact view
+    return view('chatList');
 });
 Route::get('/reviews', function () {
     return view('reviews');
@@ -59,8 +59,6 @@ Route::get('/rooms/free', [RoomsController::class, 'showFreeRooms'])->name('room
 
 // Route for automatic group allocation
 Route::post('/rooms/allocate-group', [RoomsController::class, 'autoAllocateForGroup'])->name('rooms.allocate-group');
-
 // ROOMS ROUTES END
-
 
 require __DIR__.'/auth.php';
