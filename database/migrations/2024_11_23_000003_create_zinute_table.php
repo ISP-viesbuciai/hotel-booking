@@ -8,11 +8,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('zinute', function (Blueprint $table) {
-            $table->increments('zinutes_id')->primary();
+            $table->increments('id')->primary();
             $table->string('tekstas')->nullable();
             $table->time('laikas')->nullable();
-            $table->unsignedInteger('fk_Pokalbis');
-            $table->foreign('fk_Pokalbis')->references('pokalbio_id')->on('pokalbis');
+            $table->unsignedInteger('pokalbio_id');
+            $table->unsignedInteger('siuntejo_id');
+            $table->unsignedInteger('gavejo_id');
+
+            $table->foreign('pokalbio_id')->references('id')->on('pokalbis');
+            $table->foreign('siuntejo_id')->references('id')->on('users');
+            $table->foreign('gavejo_id')->references('id')->on('users');
         });
     }
 

@@ -1,34 +1,5 @@
 @extends('layouts.app')
 
-@section('content')
-    <div class="container">
-        <div class="chat-container">
-            <div class="chat-header">
-                <h2>Pokalbis su klientu (ID: {{ $pokalbis->id }})</h2>
-            </div>
-            
-            <div class="chat-window" id="chat-window">
-                @foreach ($zinutes as $zinute)
-                    <div class="message {{ $zinute->siuntejo_id == Auth::id() ? 'client' : 'support' }}">
-                        <div class="message-bubble">
-                            {{ $zinute->tekstas }}
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-
-            <form id="chat-form" method="POST" action="{{ route('chat.message') }}">
-                @csrf
-                <input type="hidden" name="pokalbio_id" value="{{ $pokalbis->id }}">
-                <div class="chat-input-container">
-                    <input type="text" name="message" placeholder="Rašykite savo žinutę..." id="chat-input" required>
-                    <button type="submit">Siųsti</button>
-                </div>
-            </form>
-        </div>
-    </div>
-@endsection
-
 @section('styles')
     <style>
         body {
@@ -129,4 +100,33 @@
             background-color: #0056b3;
         }
     </style>
+@endsection
+
+@section('content')
+    <div class="container">
+        <div class="chat-container">
+            <div class="chat-header">
+                <h2>Pokalbis su klientu (ID: {{ $pokalbis->id }})</h2>
+            </div>
+            
+            <div class="chat-window" id="chat-window">
+                @foreach ($zinutes as $zinute)
+                    <div class="message {{ $zinute->siuntejo_id == Auth::id() ? 'client' : 'support' }}">
+                        <div class="message-bubble">
+                            {{ $zinute->tekstas }}
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            <form id="chat-form" method="POST" action="{{ route('chat.message') }}">
+                @csrf
+                <input type="hidden" name="pokalbio_id" value="{{ $pokalbis->id }}">
+                <div class="chat-input-container">
+                    <input type="text" name="message" placeholder="Rašykite savo žinutę..." id="chat-input" required>
+                    <button type="submit">Siųsti</button>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection
