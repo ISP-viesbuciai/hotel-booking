@@ -5,7 +5,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RoomsController; // Keep this as is
+use App\Http\Controllers\RoomsController; // Ensure this is correctly referenced
 
 Route::get('/', function () {
     return view('welcome');
@@ -49,16 +49,17 @@ Route::get('/edit_review/{id}', function ($id) {
 })->name('edit_review');
 
 // ROOMS ROUTES START
-Route::get('/rooms', [RoomsController::class, 'index'])->name('rooms.index');
-Route::post('/rooms', [RoomsController::class, 'store'])->name('rooms.store');
-Route::put('/rooms/{id}', [RoomsController::class, 'update'])->name('rooms.update');
-Route::delete('/rooms/{id}', [RoomsController::class, 'destroy'])->name('rooms.destroy');
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/rooms', [\App\Http\Controllers\RoomsController::class, 'index'])->name('rooms.index');
+    Route::post('/rooms', [\App\Http\Controllers\RoomsController::class, 'store'])->name('rooms.store');
+    Route::put('/rooms/{id}', [\App\Http\Controllers\RoomsController::class, 'update'])->name('rooms.update');
+    Route::delete('/rooms/{id}', [\App\Http\Controllers\RoomsController::class, 'destroy'])->name('rooms.destroy');
 
-// Route to view free rooms by date or period
-Route::get('/rooms/free', [RoomsController::class, 'showFreeRooms'])->name('rooms.free');
+    Route::get('/rooms/free', [\App\Http\Controllers\RoomsController::class, 'showFreeRooms'])->name('rooms.free');
+    Route::post('/rooms/propose-allocate-group', [\App\Http\Controllers\RoomsController::class, 'proposeAllocateForGroup'])->name('rooms.propose-allocate-group');
+    Route::post('/rooms/confirm-allocate-group', [\App\Http\Controllers\RoomsController::class, 'confirmAllocateForGroup'])->name('rooms.confirm-allocate-group');
+});
 
-// Route for automatic group allocation
-Route::post('/rooms/allocate-group', [RoomsController::class, 'autoAllocateForGroup'])->name('rooms.allocate-group');
 // ROOMS ROUTES END
 
 require __DIR__.'/auth.php';

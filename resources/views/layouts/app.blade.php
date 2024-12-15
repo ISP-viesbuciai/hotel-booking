@@ -38,13 +38,15 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('/user_reviews') }}">Jūsų atsiliepimai</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/rooms') }}">Kambariai</a>
-                </li>
+
                 @auth
                     @if (Auth::user()->is_admin)
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin.reservations.index') }}">Rezervacijos</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('/rooms') }}">Kambariai</a>
                         </li>
                     @endif
                     <li class="nav-item">

@@ -11,7 +11,7 @@ class Kambarys extends Model
 
     protected $table = 'kambarys';
     protected $primaryKey = 'kambario_id';
-    public $timestamps = false; // Since your table doesn't have created_at and updated_at
+    public $timestamps = false;
 
     protected $fillable = [
         'kambario_nr',

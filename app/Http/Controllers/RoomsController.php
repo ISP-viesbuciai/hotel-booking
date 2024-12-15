@@ -3,16 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Kambarys; // Ensure this model exists and is correctly set up
+use App\Models\Kambarys;
 
 class RoomsController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Kambarys::query();
-        // Add any additional filtering if necessary
-
-        $kambariai = $query->orderBy('aukstas')->orderBy('kambario_nr')->get();
+        $kambariai = Kambarys::orderBy('aukstas')->orderBy('kambario_nr')->get();
 
         return view('room', ['kambariai' => $kambariai]);
     }
@@ -88,11 +85,15 @@ class RoomsController extends Controller
         }
     }
 
-    public function autoAllocateForGroup(Request $request)
+    /**
+     * Propose automatic room allocation for a group.
+     */
+    public function proposeAllocateForGroup(Request $request)
     {
         $request->validate([
             'total_people' => 'required|integer|min:1',
             'rooms_count' => 'required|integer|min:1',
+            'desired_type' => 'nullable|string',
         ]);
 
         $total_people = $request->input('total_people');
@@ -142,16 +143,41 @@ class RoomsController extends Controller
             return redirect()->route('rooms.index')->with('error', 'Nepavyko rasti kambarių atitinkančių poreikius.');
         }
 
-        // Update allocated kambariai to no longer be available
-        foreach ($best_set as $r) {
-            $model = Kambarys::find($r->kambario_id);
-            $model->update(['available' => 0]);
-        }
-
+        $allocated_kambariai_ids = array_map(fn($r) => $r->kambario_id, $best_set);
         $allocated_kambariai_numbers = array_map(fn($r) => $r->kambario_nr, $best_set);
 
+        // Store the allocated IDs and numbers in session for confirmation
+        session(['allocated_rooms' => $allocated_kambariai_ids]);
+        session(['allocated_rooms_numbers' => $allocated_kambariai_numbers]);
+
+        return view('room', [
+            'kambariai' => Kambarys::orderBy('aukstas')->orderBy('kambario_nr')->get(),
+            'proposed_rooms' => $best_set,
+        ]);
+    }
+
+    /**
+     * Confirm the proposed room allocation and make the booking.
+     */
+    public function confirmAllocateForGroup(Request $request)
+    {
+        $allocated_rooms = session('allocated_rooms');
+        $allocated_rooms_numbers = session('allocated_rooms_numbers');
+
+        if (!$allocated_rooms) {
+            return redirect()->route('rooms.index')->with('error', 'Nėra siūlomų kambarių rezervacijos.');
+        }
+
+        // Update rooms to not available within a transaction for data integrity
+        \DB::transaction(function () use ($allocated_rooms) {
+            Kambarys::whereIn('kambario_id', $allocated_rooms)->update(['available' => 0]);
+        });
+
+        // Clear the session
+        session()->forget(['allocated_rooms', 'allocated_rooms_numbers']);
+
         return redirect()->route('rooms.index')
-            ->with('success', 'Grupės kambariai sėkmingai paskirstyti ir rezervuoti!')
-            ->with('allocated_rooms', $allocated_kambariai_numbers);
+            ->with('success', 'Grupės kambariai sėkmingai rezervuoti!')
+            ->with('allocated_rooms', $allocated_rooms_numbers);
     }
 }

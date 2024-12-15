@@ -22,7 +22,7 @@
                 Automatinis kambarių paskirstymas grupei
             </div>
             <div id="allocationSection" class="card-body" style="display: none;">
-                <form method="POST" action="{{ route('rooms.allocate-group') }}">
+                <form method="POST" action="{{ route('rooms.propose-allocate-group') }}">
                     @csrf
                     <div class="mb-3">
                         <label for="total_people" class="form-label">Žmonių skaičius</label>
@@ -40,6 +40,46 @@
                 </form>
             </div>
         </div>
+
+        @if(isset($proposed_rooms))
+            <div class="card mt-4">
+                <div class="card-header">
+                    Siūlomi kambariai
+                </div>
+                <div class="card-body">
+                    <p>Ar sutinkate su šiuo kambarių paskirstymu?</p>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Kambario Numeris</th>
+                            <th>Tipas</th>
+                            <th>Talpa</th>
+                            <th>Kaina už Nakvynę</th>
+                            <th>Vaizdas į Jūrą</th>
+                            <th>Aukštas</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($proposed_rooms as $room)
+                            <tr>
+                                <td>{{ $room->kambario_nr }}</td>
+                                <td>{{ $room->tipas }}</td>
+                                <td>{{ $room->capacity }}</td>
+                                <td>{{ number_format($room->kaina_nakciai, 2) }} EUR</td>
+                                <td>{{ $room->vaizdas_i_jura ? 'Taip' : 'Ne' }}</td>
+                                <td>{{ $room->aukstas }}</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                    <form method="POST" action="{{ route('rooms.confirm-allocate-group') }}">
+                        @csrf
+                        <button type="submit" class="btn btn-success">Patvirtinti ir rezervuoti</button>
+                        <a href="{{ route('rooms.index') }}" class="btn btn-secondary">Atšaukti</a>
+                    </form>
+                </div>
+            </div>
+        @endif
 
         @if(session('allocated_rooms'))
             <div class="alert alert-info mt-3">
@@ -169,7 +209,7 @@
                             <td>{{ $kambarys->kambario_nr }}</td>
                             <td>{{ $kambarys->tipas }}</td>
                             <td>{{ $kambarys->capacity }}</td>
-                            <td>{{ $kambarys->kaina_nakciai }}</td>
+                            <td>{{ number_format($kambarys->kaina_nakciai, 2) }} EUR</td>
                             <td>{{ $kambarys->available ? 'Taip' : 'Ne' }}</td>
                             <td>{{ $kambarys->aukstas }}</td>
                             <td>{{ $kambarys->vaizdas_i_jura ? 'Taip' : 'Ne' }}</td>
