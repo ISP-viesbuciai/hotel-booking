@@ -80,5 +80,7 @@ Route::get('/pokalbis/{id}/join', [ConversationController::class, 'joinConversat
 Route::get('/chat/join/{id}', [ConversationController::class, 'joinConversation'])->name('join.pokalbis');
 Route::post('/chat/message', [ConversationController::class, 'sendMessage'])->name('chat.message');
 
+Route::get('/contact', [ChatController::class, 'faq'])->name('contact');
+Route::post('/faq/chat', [ChatController::class, 'saveFaqToChat'])->name('faq.chat');
 
 require __DIR__.'/auth.php';

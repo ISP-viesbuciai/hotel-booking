@@ -74,6 +74,57 @@ class ChatController extends Controller
     return redirect()->route('chat.index');
 
 }
+
+public function faq()
+{
+    // Retrieve the first 10 messages using the Zinute model
+    $faqs = Zinute::select('id', 'tekstas')
+        ->take(10)
+        ->get()
+        ->map(function ($faq) {
+            // Split the tekstas field into question and answer
+            $parts = explode(':::', $faq->tekstas);
+            
+            // Return the FAQ with question and answer
+            return (object) [
+                'id' => $faq->id,
+                'question' => $parts[0] ?? '',  // The part before the ::: is the question
+                'answer' => $parts[1] ?? '',    // The part after the ::: is the answer
+            ];
+        });
+
+    // Return the view with the retrieved data
+    return view('contact', compact('faqs'));
+}
+    public function saveFaqToChat(Request $request)
+    {
+        $user = Auth::user();
+        $pokalbis = Pokalbis::where('naudotojo_id', $user->id)->latest()->first();
+
+        if (!$pokalbis) {
+            return response()->json(['success' => false, 'error' => 'No active conversation found.'], 404);
+        }
+
+        // Save question
+        Zinute::create([
+            'pokalbio_id' => $pokalbis->id,
+            'siuntejo_id' => $user->id,
+            'gavejo_id' => $pokalbis->admin_id,
+            'tekstas' => $request->question,
+            'laikas' => now(),
+        ]);
+
+        // Save answer
+        Zinute::create([
+            'pokalbio_id' => $pokalbis->id,
+            'siuntejo_id' => $pokalbis->admin_id,
+            'gavejo_id' => $user->id,
+            'tekstas' => $request->answer,
+            'laikas' => now(),
+        ]);
+
+        return response()->json(['success' => true]);
+    }
     
 }
 
