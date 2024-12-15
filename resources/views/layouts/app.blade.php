@@ -37,17 +37,18 @@
                     <a class="nav-link" href="{{ url('/reviews') }}">Atsiliepimai</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/user_reviews') }}">Jūsų atsiliepimai</a>
+                    <a class="nav-link" href="{{ url('/my-reviews') }}">Jūsų atsiliepimai</a>
                 </li>
-
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/rooms') }}">Kambariai</a>
+                </li>
                 @auth
                     @if (Auth::user()->is_admin)
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin.reservations.index') }}">Rezervacijos</a>
                         </li>
-
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/rooms') }}">Kambariai</a>
+                            <a class="nav-link" href="{{ route('admin.users.index') }}">Visų vartotojų atsiliepimai</a>
                         </li>
                     @endif
                     <li class="nav-item">
@@ -79,7 +80,7 @@
 <div class="container mt-4">
     @yield('content')
 </div>
-
+@yield('scripts')
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

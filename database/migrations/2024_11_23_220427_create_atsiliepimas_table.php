@@ -12,6 +12,7 @@ return new class extends Migration
             $table->string('tekstas')->nullable();
             $table->integer('ivertinimas')->nullable();
             $table->date('data')->nullable();
+            $table->unsignedInteger('likes_count')->default(0);
             $table->unsignedInteger('fk_Naudotojas');
             $table->foreign('fk_Naudotojas')->references('id')->on('users');
         });
@@ -20,5 +21,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('atsiliepimas');
+        Schema::table('atsiliepimas', function (Blueprint $table) {
+            $table->dropColumn('likes_count');
+        });
     }
 };

@@ -14,14 +14,14 @@ class Naudotojas extends Model
      *
      * @var string
      */
-    protected $table = 'naudotojas';
+    protected $table = 'users';
 
     /**
      * The primary key associated with the table.
      *
      * @var string
      */
-    protected $primaryKey = 'kliento_id';
+    protected $primaryKey = 'id';
 
     /**
      * Indicates if the IDs are auto-incrementing.
