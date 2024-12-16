@@ -29,23 +29,24 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('/') }}">Pagrindinis</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/contact') }}">Susisiekite su mumis</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/email') }}">Parašykite laišką</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/chatList') }}">Pokalbių sąrašas</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/reviews') }}">Atsiliepimai</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/my-reviews') }}">Jūsų atsiliepimai</a>
-                </li>
                 @auth
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/contact') }}">Susisiekite su mumis</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/email') }}">Parašykite laišką</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/reviews') }}">Atsiliepimai</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/my-reviews') }}">Jūsų atsiliepimai</a>
+                    </li>
+                
                     @if (Auth::user()->is_admin)
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('/chatList') }}">Pokalbių sąrašas</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin.reservations.index') }}">Rezervacijos</a>
                         </li>
