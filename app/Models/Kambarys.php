@@ -22,4 +22,9 @@ class Kambarys extends Model
         'aukstas',
         'vaizdas_i_jura'
     ];
+
+    public function reservations()
+    {
+        return $this->hasMany(Rezervacija::class, 'fk_Kambarys', 'kambario_id');
+    }
 }

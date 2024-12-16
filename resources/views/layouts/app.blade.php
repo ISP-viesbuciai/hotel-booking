@@ -8,6 +8,11 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     @yield('styles')
+    <!-- Flatpickr CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 </head>
 
 <body>
@@ -39,9 +44,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('/my-reviews') }}">Jūsų atsiliepimai</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/rooms') }}">Kambariai</a>
-                </li>
                 @auth
                     @if (Auth::user()->is_admin)
                         <li class="nav-item">
@@ -51,6 +53,9 @@
                             <a class="nav-link" href="{{ route('admin.users.index') }}">Visų vartotojų atsiliepimai</a>
                         </li>
                     @endif
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('reservations.index') }}">Rezervacijos</a>
+                        </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/profile/edit') }}">Profilio redagavimas</a>
                     </li>

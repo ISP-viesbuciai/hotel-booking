@@ -42,6 +42,10 @@ class User extends Authenticatable
     ];
     public function rezervacijos()
     {
-        return $this->hasMany(Rezervacija::class, 'fk_Naudotojas');
+        return $this->hasMany(Rezervacija::class, 'fk_Naudotojas', 'id');
+    }
+    public function reservations()
+    {
+        return $this->hasMany(Rezervacija::class, 'fk_Naudotojas', 'id');
     }
 }

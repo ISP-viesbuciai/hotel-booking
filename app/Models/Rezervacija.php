@@ -10,6 +10,7 @@ class Rezervacija extends Model
 
     protected $table = 'rezervacija'; // Ensure this matches your table name
     protected $primaryKey = 'rezervacijos_id'; // Ensure this matches your primary key
+    public $timestamps = false;
 
     protected $fillable = [
         'rezervuotu_kambariu_nr',
@@ -33,7 +34,7 @@ class Rezervacija extends Model
     }
     public function room()
     {
-        return $this->belongsTo(Kambarys::class, 'fk_Kambarys');
+        return $this->belongsTo(Kambarys::class, 'fk_Kambarys', 'kambario_id');
     }
 
     public function status()

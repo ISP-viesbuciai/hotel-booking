@@ -1,9 +1,14 @@
 <?php
 
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\ConversationController;
+use App\Http\Controllers\EmailController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\AdminReservationController;
+use App\Http\Controllers\UserReservationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomsController;
 use App\Http\Controllers\ReviewController;
@@ -19,14 +24,28 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    // Profile routes
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/profile/add-card', [ProfileController::class, 'addCard'])->name('profile.addCard');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // User reservation routes
+    Route::get('/reservations', [UserReservationController::class, 'index'])->name('reservations.index');
+    Route::post('/reservations', [UserReservationController::class, 'store'])->name('reservations.store');
+    Route::post('/stripe-checkout-session', [PaymentController::class, 'createCheckoutSession'])->name('stripe.checkout.session');
+    Route::post('/stripe-success', [PaymentController::class, 'paymentSuccess'])->name('stripe.success');
+
+
+    Route::post('/check-room-availability', [RoomsController::class, 'checkAvailability'])->name('check.room.availability');
+
+//    Route::get('/reservations/{id}/edit', [UserReservationController::class, 'edit'])->name('user.reservations.edit');
+//    Route::put('/reservations/{id}', [UserReservationController::class, 'update'])->name('user.reservations.update');
+//    Route::delete('/reservations/{id}', [UserReservationController::class, 'destroy'])->name('user.reservations.destroy');
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/reservations', [ReservationController::class, 'index'])->name('admin.reservations.index');
+    Route::get('/admin/reservations', [AdminReservationController::class, 'index'])->name('admin.reservations.index');
     Route::get('/admin/users', [AdminController::class, 'index'])->name('admin.users.index');
     Route::get('/admin/users/{user}', [AdminController::class, 'showUser'])->name('admin.users.show');
     Route::post('/admin/users/reviews/{reviewId}/delete', [AdminController::class, 'deleteReview'])->name('admin.users.reviews.delete');

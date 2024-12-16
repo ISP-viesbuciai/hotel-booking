@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Rezervacija;
 use Illuminate\Http\Request;
 
-class ReservationController extends Controller
+class AdminReservationController extends Controller
 {
     /**
      * Display a listing of the reservations.
