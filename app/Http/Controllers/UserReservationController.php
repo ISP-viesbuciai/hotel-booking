@@ -43,5 +43,64 @@ class UserReservationController extends Controller
 
         return view('reservations.index', compact('availableRooms', 'validated', 'userReservations'));
     }
+
+    public function edit($id)
+    {
+        $reservation = Rezervacija::findOrFail($id);
+
+        if ($reservation->fk_Naudotojas != auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Check if the reservation's start date is less than 24 hours away
+        if (now()->diffInHours($reservation->pradzios_data, false) < 24) {
+            return redirect()->route('reservations.index')->with('error', 'Rezervacijos negalima redaguoti, nes liko mažiau nei 24 valandos iki pradžios.');
+        }
+
+        return view('reservations.edit', compact('reservation'));
+    }
+
+    public function destroy($id)
+    {
+        $reservation = Rezervacija::findOrFail($id);
+
+        if ($reservation->fk_Naudotojas != auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Check if the reservation's start date is less than 24 hours away
+        if (now()->diffInHours($reservation->pradzios_data, false) < 24) {
+            return redirect()->route('reservations.index')->with('error', 'Rezervacijos negalima ištrinti, nes liko mažiau nei 24 valandos iki pradžios.');
+        }
+
+        $reservation->delete();
+
+        return redirect()->route('reservations.index')->with('success', 'Rezervacija sėkmingai ištrinta.');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $reservation = Rezervacija::findOrFail($id);
+
+        // Check if the user owns the reservation
+        if ($reservation->fk_Naudotojas != auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Check if the reservation's start date is less than 24 hours away
+        if (now()->diffInHours($reservation->pradzios_data, false) < 24) {
+            return redirect()->route('reservations.index')->with('error', 'Rezervacijos negalima redaguoti, nes liko mažiau nei 24 valandos iki pradžios.');
+        }
+
+        $validated = $request->validate([
+            'pradzios_data' => 'required|date',
+            'pabaigos_data' => 'required|date|after:pradzios_data',
+            'kiek_zmoniu' => 'required|integer|min:1',
+        ]);
+
+        $reservation->update($validated);
+
+        return redirect()->route('reservations.index')->with('success', 'Rezervacija sėkmingai atnaujinta.');
+    }
 }
 

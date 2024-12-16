@@ -35,13 +35,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/reservations', [UserReservationController::class, 'store'])->name('reservations.store');
     Route::post('/stripe-checkout-session', [PaymentController::class, 'createCheckoutSession'])->name('stripe.checkout.session');
     Route::post('/stripe-success', [PaymentController::class, 'paymentSuccess'])->name('stripe.success');
+    Route::get('/reservations/{id}/edit', [UserReservationController::class, 'edit'])->name('reservations.edit');
+    Route::delete('/reservations/{id}', [UserReservationController::class, 'destroy'])->name('reservations.destroy');
+
+    Route::put('/reservations/{id}', [UserReservationController::class, 'update'])->name('reservations.update');
+    Route::get('/reservations/{id}/edit', [UserReservationController::class, 'edit'])->name('reservations.edit');
 
 
     Route::post('/check-room-availability', [RoomsController::class, 'checkAvailability'])->name('check.room.availability');
-
-//    Route::get('/reservations/{id}/edit', [UserReservationController::class, 'edit'])->name('user.reservations.edit');
-//    Route::put('/reservations/{id}', [UserReservationController::class, 'update'])->name('user.reservations.update');
-//    Route::delete('/reservations/{id}', [UserReservationController::class, 'destroy'])->name('user.reservations.destroy');
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {

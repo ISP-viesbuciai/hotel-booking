@@ -7,6 +7,10 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
+    @if(session('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
+    @endif
+
     @if($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -131,7 +135,7 @@
         <h3>Jūsų Rezervacijos</h3>
 
         @if($userReservations->isEmpty())
-            <p class="text-warning">Neturite užbaigtų rezervacijų.</p>
+            <p class="text">Neturite užbaigtų rezervacijų.</p>
         @else
             <table class="table table-bordered mt-3">
                 <thead>
@@ -142,6 +146,7 @@
                     <th>Bendra Kaina</th>
                     <th>Kambario Numeris</th>
                     <th>Rezervacijos Statusas</th>
+                    <th>Veiksmai</th> <!-- Actions column -->
                 </tr>
                 </thead>
                 <tbody>
@@ -153,13 +158,29 @@
                         <td>{{ number_format($reservation->bendra_kaina, 2) }} EUR</td>
                         <td>{{ $reservation->rezervuotu_kambariu_nr }}</td>
                         <td>Patvirtinta</td>
-{{--                        <td>{{ $reservation->rezervacijos_statusas }}</td>--}}
+                        <td>
+                            <!-- Edit Button -->
+                            <a href="{{ route('reservations.edit', $reservation->rezervacijos_id) }}"
+                               class="btn btn-warning btn-sm">Redaguoti</a>
+
+                            <!-- Delete Form -->
+                            <form action="{{ route('reservations.destroy', $reservation->rezervacijos_id) }}"
+                                  method="POST"
+                                  style="display:inline-block;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                        class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Ar tikrai norite ištrinti šią rezervaciją?')">Ištrinti</button>
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>
             </table>
         @endif
     </div>
+
 
 
     <script>

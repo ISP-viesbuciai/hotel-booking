@@ -52,10 +52,11 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin.users.index') }}">Visų vartotojų atsiliepimai</a>
                         </li>
-                    @endif
+                    @else
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('reservations.index') }}">Rezervacijos</a>
                         </li>
+                    @endif
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/profile/edit') }}">Profilio redagavimas</a>
                     </li>

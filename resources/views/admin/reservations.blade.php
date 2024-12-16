@@ -25,11 +25,12 @@
             @foreach ($reservations as $reservation)
                 <tr>
                     <td>{{ $reservation->user->name }}</td>
-                    <td>{{ $reservation->room->name }}</td>
+                    <td>{{ $reservation->room->kambario_nr }}</td>
                     <td>{{ $reservation->pradzios_data }}</td>
                     <td>{{ $reservation->pabaigos_data }}</td>
                     <td>{{ $reservation->bendra_kaina }}</td>
-                    <td>{{ $reservation->status->name }}</td>
+                    <td>Patvirtinta</td>
+{{--                    <td>{{ $reservation->status->name }}</td>--}}
                 </tr>
             @endforeach
         </tbody>
